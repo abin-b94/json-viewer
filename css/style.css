@@ -476,7 +476,9 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  height: calc(100vh - 210px);
   min-height: 520px;
+  max-height: 860px;
   flex: 1;
 }
 
@@ -505,6 +507,8 @@ button {
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   position: relative;
+  min-height: 0;
+  height: 100%;
 }
 
 .panel-header {
@@ -623,8 +627,10 @@ button {
   flex: 1;
   display: flex;
   position: relative;
-  min-height: 420px;
+  min-height: 0;
+  height: 100%;
   background-color: var(--bg-surface);
+  overflow: hidden;
 }
 
 .editor-line-numbers {
@@ -670,9 +676,11 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 1.5rem;
+  padding: 2rem 1.5rem;
   background-color: var(--bg-surface);
   text-align: center;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .file-drop-box {
@@ -737,6 +745,7 @@ button {
   font-family: var(--font-mono);
   font-size: 0.86rem;
   line-height: 1.6;
+  min-height: 0;
 }
 
 .tree-empty {
@@ -1345,6 +1354,13 @@ kbd {
 @media (max-width: 1024px) {
   .workspace-panels {
     grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+  }
+
+  .panel-card {
+    height: 480px;
+    min-height: 380px;
   }
 
   .steps-grid {

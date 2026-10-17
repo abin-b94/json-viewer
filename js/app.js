@@ -376,6 +376,10 @@ class JsonViewerApp {
       this.elements.tabFile?.classList.add('is-active');
       this.elements.textInputSection.hidden = true;
       this.elements.fileInputSection.hidden = false;
+      // Collapse tree nodes to keep layout compact and focused
+      this.treeViewer?.collapseAll();
+      // Ensure the file upload box is in view
+      this.elements.fileDropZone?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 
