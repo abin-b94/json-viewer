@@ -2,7 +2,7 @@
  * sw.js - Service Worker for 100% Offline Support
  */
 
-const CACHE_NAME = 'json-viewer-v1';
+const CACHE_NAME = 'json-viewer-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

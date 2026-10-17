@@ -297,10 +297,19 @@ class JsonViewerApp {
     this.elements.viewTreeBtn?.addEventListener('click', () => this.setLayoutView('tree'));
 
     // Shortcuts modal
-    this.elements.btnShortcuts?.addEventListener('click', () => this.toggleShortcutsModal(true));
-    this.elements.shortcutsModalClose?.addEventListener('click', () => this.toggleShortcutsModal(false));
+    this.elements.btnShortcuts?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleShortcutsModal(true);
+    });
+    this.elements.shortcutsModalClose?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleShortcutsModal(false);
+    });
     this.elements.shortcutsModal?.addEventListener('click', (e) => {
       if (e.target === this.elements.shortcutsModal) {
+        e.preventDefault();
         this.toggleShortcutsModal(false);
       }
     });
@@ -342,9 +351,15 @@ class JsonViewerApp {
 
       // Escape key: dismiss modal, clear search
       if (e.key === 'Escape') {
-        if (!this.elements.shortcutsModal.hidden) {
+        const modal = this.elements.shortcutsModal;
+        const isModalOpen = modal && (!modal.hidden || modal.classList.contains('is-open'));
+        if (isModalOpen) {
+          e.preventDefault();
+          e.stopPropagation();
           this.toggleShortcutsModal(false);
+          return;
         } else if (document.activeElement === this.elements.searchInput && this.elements.searchInput.value) {
+          e.preventDefault();
           this.elements.searchClearBtn?.click();
         }
       }
@@ -740,8 +755,18 @@ class JsonViewerApp {
   }
 
   toggleShortcutsModal(open) {
-    if (!this.elements.shortcutsModal) return;
-    this.elements.shortcutsModal.hidden = !open;
+    const modal = this.elements.shortcutsModal;
+    if (!modal) return;
+    
+    if (open) {
+      modal.hidden = false;
+      modal.classList.add('is-open');
+      this.elements.shortcutsModalClose?.focus();
+    } else {
+      modal.hidden = true;
+      modal.classList.remove('is-open');
+      this.elements.btnShortcuts?.focus();
+    }
   }
 
   registerServiceWorker() {
