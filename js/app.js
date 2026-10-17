@@ -370,7 +370,16 @@ class JsonViewerApp {
       this.elements.tabFile?.classList.remove('is-active');
       this.elements.textInputSection.hidden = false;
       this.elements.fileInputSection.hidden = true;
-      this.elements.jsonInput?.focus();
+
+      const textarea = this.elements.jsonInput;
+      if (textarea) {
+        textarea.focus({ preventScroll: true });
+        // Keep view at the top instead of auto-scrolling to the end of the text
+        textarea.scrollTop = 0;
+        if (this.elements.lineNumbers) {
+          this.elements.lineNumbers.scrollTop = 0;
+        }
+      }
     } else {
       this.elements.tabText?.classList.remove('is-active');
       this.elements.tabFile?.classList.add('is-active');
