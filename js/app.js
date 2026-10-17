@@ -22,15 +22,13 @@ class JsonViewerApp {
     this.bindKeyboardShortcuts();
     this.registerServiceWorker();
 
-    // Check if there is existing content or initialize with sample or empty state
-    const savedContent = localStorage.getItem('json_viewer_draft');
-    if (savedContent && savedContent.trim()) {
-      this.elements.jsonInput.value = savedContent;
-      this.handleProcessInput({ format: true, silent: true });
-    } else {
-      // Load sample by default so the user immediately experiences the interactive tree!
-      this.loadSampleData(true);
-    }
+    // Purge any legacy draft from previous versions to honor memory-only privacy
+    try {
+      localStorage.removeItem('json_viewer_draft');
+    } catch (_) {}
+
+    // Load sample by default so the user immediately experiences the interactive tree
+    this.loadSampleData(true);
 
     this.updateStats();
   }
@@ -188,7 +186,6 @@ class JsonViewerApp {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         this.handleAutoParse();
-        localStorage.setItem('json_viewer_draft', this.elements.jsonInput.value);
       }, 350);
     });
 
@@ -473,7 +470,6 @@ class JsonViewerApp {
       this.updateStatusBadge('valid', res.stats);
       this.updateStats(res.stats);
       this.showToast('JSON beautified with 2-space indentation', 'success');
-      localStorage.setItem('json_viewer_draft', res.formatted);
     } else {
       this.showErrorBanner(res);
       this.updateStatusBadge('invalid');
@@ -499,7 +495,6 @@ class JsonViewerApp {
       this.updateStatusBadge('valid', res.stats);
       this.updateStats(res.stats);
       this.showToast('JSON minified into single line', 'success');
-      localStorage.setItem('json_viewer_draft', res.minified);
     } else {
       this.showErrorBanner(res);
       this.updateStatusBadge('invalid');

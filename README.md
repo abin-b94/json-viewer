@@ -9,6 +9,7 @@ Inspect complex JSON payloads with an interactive collapsible tree view, syntax 
 ## 🔒 Privacy & Performance Guarantees
 
 - **100% Client-Side:** All parsing, formatting, validation, minification, and tree rendering are performed locally in your browser using the native JavaScript V8 engine.
+- **In-Memory & Zero Disk Footprint:** Your JSON data exists strictly in volatile RAM for the duration of your tab session. No drafts are persisted to `localStorage` or disk, protecting sensitive credentials, API keys, and customer data on shared workstations.
 - **Zero Server Transmission:** Not a single byte of your JSON is ever transmitted to an external server or saved in a remote database.
 - **Offline Capable:** Equipped with a Service Worker and PWA Web Manifest, allowing the app to function seamlessly even without an internet connection after initial load.
 - **Zero Dependencies:** Pure vanilla JavaScript with zero third-party telemetry, tracking libraries, or external CDNs.
