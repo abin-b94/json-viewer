@@ -57,8 +57,6 @@ Inspect complex JSON payloads with an interactive collapsible tree view, syntax 
 
 ---
 
-
-
 ## ⌨️ Keyboard Shortcuts
 
 | Shortcut | Action |
