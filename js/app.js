@@ -404,7 +404,11 @@ class JsonViewerApp {
     // Check extension
     const ext = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase();
     if (ext !== 'json' && ext !== 'txt') {
-      this.showToast('Please upload a valid .json or .txt file', 'warning');
+      this.showToast('Unsupported file type. Please upload a valid .json or .txt file.', 'error');
+      if (this.elements.fileInput) {
+        this.elements.fileInput.value = '';
+      }
+      return;
     }
 
     const reader = new FileReader();
