@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#4f46e5" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  <!-- Background Rounded Rect -->
+  <rect x="32" y="32" width="448" height="448" rx="96" fill="url(#brandGrad)" filter="url(#shadow)" />
+  <!-- Inner dark card -->
+  <rect x="56" y="56" width="400" height="400" rx="80" fill="#0f172a" fill-opacity="0.85" stroke="#ffffff" stroke-opacity="0.1" stroke-width="2" />
+  <!-- JSON Braces and Tree Graphics -->
+  <path d="M190 140 C140 140 140 180 140 210 C140 236 120 256 96 256 C120 256 140 276 140 302 C140 332 140 372 190 372" fill="none" stroke="#38bdf8" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M322 140 C372 140 372 180 372 210 C372 236 392 256 416 256 C392 256 372 276 372 302 C372 332 372 372 322 372" fill="none" stroke="#a78bfa" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Nodes & Connectors -->
+  <circle cx="216" cy="216" r="14" fill="#34d399" />
+  <circle cx="296" cy="216" r="14" fill="#fbbf24" />
+  <circle cx="256" cy="296" r="14" fill="#f43f5e" />
+  <line x1="216" y1="216" x2="296" y2="216" stroke="#ffffff" stroke-opacity="0.4" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 12" />
+  <line x1="256" y1="216" x2="256" y2="296" stroke="#ffffff" stroke-opacity="0.4" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 12" />
+</svg>

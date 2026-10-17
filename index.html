@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online JSON Viewer & Formatter | Privacy-First Client-Side Tool</title>
+  
+  <meta name="description" content="Free, fast, and privacy-first online JSON Viewer, Formatter, Validator, and Minifier. Inspect JSON as an interactive collapsible tree entirely in your browser with zero server transmission.">
+  <meta name="keywords" content="json viewer, json formatter, json beautifier, json validator, json minifier, privacy first json, client-side json tree">
+  <meta name="theme-color" content="#4f46e5">
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <img src="icons/icon.svg" alt="JSON Viewer Logo" class="brand-icon" width="38" height="38">
+        <div class="brand-titles">
+          <h1 class="site-title">
+            Online JSON Viewer
+            <span class="privacy-badge">
+              <span class="privacy-pulse" aria-hidden="true"></span>
+              100% Client-Side Privacy
+            </span>
+          </h1>
+          <p class="site-tagline">Format, validate, and inspect JSON entirely in your browser.</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Shortcuts Cheat-sheet Button -->
+        <button id="btn-shortcuts" class="header-btn" title="View keyboard shortcuts" aria-label="Keyboard Shortcuts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+            <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M6 12h.001M10 12h.001M14 12h.001M18 12h.001M8 16h8"></path>
+          </svg>
+          <span>Shortcuts</span>
+        </button>
+
+        <!-- Light / Dark Mode Toggle -->
+        <button id="theme-toggle-btn" class="header-btn" title="Toggle color theme" aria-label="Toggle Theme">
+          <span id="theme-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span>Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-wrapper" id="app-container">
+
+    <!-- Primary Control Toolbar -->
+    <nav class="toolbar-bar" aria-label="JSON Actions Toolbar">
+      <!-- Input Mode Switcher -->
+      <div class="toolbar-group">
+        <div class="segmented-switch" role="tablist" aria-label="Input Mode">
+          <button id="tab-mode-text" class="segmented-btn is-active" role="tab" aria-selected="true" aria-controls="text-input-section">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15" aria-hidden="true">
+              <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 014 2.5h12A1.5 1.5 0 0117.5 4v12a1.5 1.5 0 01-1.5 1.5H4A1.5 1.5 0 012.5 16V4zm2 .5a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V5a.5.5 0 00-.5-.5H4.5zM6 7.75A.75.75 0 016.75 7h6.5a.75.75 0 010 1.5h-6.5A.75.75 0 016 7.75zm0 3a.75.75 0 01.75-.75h6.5a.75.75 0 010 1.5h-6.5A.75.75 0 016 10.75zm0 3a.75.75 0 01.75-.75h3.5a.75.75 0 010 1.5h-3.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+            </svg>
+            Text
+          </button>
+          <button id="tab-mode-file" class="segmented-btn" role="tab" aria-selected="false" aria-controls="file-input-section">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15" aria-hidden="true">
+              <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 002 4.5v11A2.5 2.5 0 004.5 18h11a2.5 2.5 0 002.5-2.5v-8.5a.5.5 0 00-.146-.354l-4.5-4.5A.5.5 0 0013 2H4.5zm0 1.5h8v3.5a1 1 0 001 1h3.5V15.5a1 1 0 01-1 1h-11a1 1 0 01-1-1v-11a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            File
+          </button>
+        </div>
+
+        <div class="tool-divider" aria-hidden="true"></div>
+
+        <!-- Format / Beautify -->
+        <button id="btn-format" class="tool-btn tool-btn-primary" title="Format JSON with 2-space indentation (Ctrl+Enter)">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M2.5 4A1.5 1.5 0 014 2.5h12A1.5 1.5 0 0117.5 4v1.5a.75.75 0 01-1.5 0V4a.5.5 0 00-.5-.5H4a.5.5 0 00-.5.5v12a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-1.5a.75.75 0 011.5 0V16a1.5 1.5 0 01-1.5 1.5H4A1.5 1.5 0 012.5 16V4z" clip-rule="evenodd" />
+            <path d="M7 6.5A.75.75 0 017.75 5.75h4.5a.75.75 0 010 1.5h-4.5A.75.75 0 017 6.5zm0 3.5a.75.75 0 01.75-.75h6.5a.75.75 0 010 1.5h-6.5A.75.75 0 017 10zm0 3.5a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5A.75.75 0 017 13.5z" />
+          </svg>
+          <span>Format</span>
+        </button>
+
+        <!-- Minify -->
+        <button id="btn-minify" class="tool-btn" title="Minify JSON into a single line (Ctrl+Shift+M)">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M3 4.25A.75.75 0 013.75 3.5h12.5a.75.75 0 010 1.5H3.75A.75.75 0 013 4.25zm0 5.75a.75.75 0 01.75-.75h12.5a.75.75 0 010 1.5H3.75A.75.75 0 013 10zm0 5.75a.75.75 0 01.75-.75h12.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+          </svg>
+          <span>Minify</span>
+        </button>
+
+        <!-- Validate -->
+        <button id="btn-validate" class="tool-btn" title="Check JSON validity">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Validate</span>
+        </button>
+
+        <!-- Copy -->
+        <button id="btn-copy" class="tool-btn" title="Copy JSON to clipboard (Ctrl+Shift+C)">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12a1.5 1.5 0 01.439 1.061V16.5A1.5 1.5 0 0115.5 18h-7A1.5 1.5 0 017 16.5v-13z" />
+            <path d="M4.5 6A1.5 1.5 0 003 7.5v11A1.5 1.5 0 004.5 20h7a1.5 1.5 0 001.5-1.5v-1H8.5A2.5 2.5 0 016 15V6h-1.5z" />
+          </svg>
+          <span>Copy</span>
+        </button>
+
+        <!-- Load File (Quick trigger) -->
+        <button id="btn-load-file" class="tool-btn" title="Open file picker to import JSON">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M3 3.5A1.5 1.5 0 014.5 2h6.879a1.5 1.5 0 011.06.44l4.122 4.12a1.5 1.5 0 01.439 1.061V16.5A1.5 1.5 0 0115.5 18h-11A1.5 1.5 0 013 16.5v-13zm8 5a.75.75 0 01.75-.75h3.69l-3.69-3.69V7.75a.75.75 0 00.75.75z" clip-rule="evenodd" />
+            <path d="M10 11.25a.75.75 0 01.75.75v2.19l.72-.72a.75.75 0 111.06 1.06l-2 2a.75.75 0 01-1.06 0l-2-2a.75.75 0 111.06-1.06l.72.72V12a.75.75 0 01.75-.75z" />
+          </svg>
+          <span>Load File</span>
+        </button>
+
+        <!-- Sample JSON -->
+        <button id="btn-sample" class="tool-btn" title="Load example JSON data">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.451a.75.75 0 000-1.5H4.5a.75.75 0 00-.75.75v3.75a.75.75 0 001.5 0v-2.186l.334.334a7 7 0 0011.96-3.15.75.75 0 00-1.232-.3zM4.688 8.576a5.5 5.5 0 019.201-2.466l.312.311h-2.451a.75.75 0 000 1.5H15.5a.75.75 0 00.75-.75V3.421a.75.75 0 00-1.5 0v2.186l-.334-.334a7 7 0 00-11.96 3.15.75.75 0 001.232.3z" clip-rule="evenodd" />
+          </svg>
+          <span>Example JSON</span>
+        </button>
+
+        <!-- Clear -->
+        <button id="btn-clear" class="tool-btn tool-btn-danger" title="Erase input and viewer">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
+          </svg>
+          <span>Clear</span>
+        </button>
+      </div>
+
+      <!-- Layout View Selector (Split / Editor / Tree) -->
+      <div class="toolbar-group">
+        <div class="segmented-switch" aria-label="Layout View Modes">
+          <button id="view-split-btn" class="segmented-btn is-active" title="Split View: Editor and Tree side by side">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true">
+              <path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 014.25 2h11.5A2.25 2.25 0 0118 4.25v11.5A2.25 2.25 0 0115.75 18H4.25A2.25 2.25 0 012 15.75V4.25zm7.25-.75H4.25a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h4.25V3.5h.75v13h4.25a.75.75 0 00.75-.75V4.25a.75.75 0 00-.75-.75h-4.25V3.5z" clip-rule="evenodd" />
+            </svg>
+            Split
+          </button>
+          <button id="view-editor-btn" class="segmented-btn" title="Editor View only">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true">
+              <path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 014.25 2h11.5A2.25 2.25 0 0118 4.25v11.5A2.25 2.25 0 0115.75 18H4.25A2.25 2.25 0 012 15.75V4.25zm1.5 0a.75.75 0 01.75-.75h11.5a.75.75 0 01.75.75v11.5a.75.75 0 01-.75.75H4.25a.75.75 0 01-.75-.75V4.25z" clip-rule="evenodd" />
+            </svg>
+            Editor
+          </button>
+          <button id="view-tree-btn" class="segmented-btn" title="Tree View only">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true">
+              <path fill-rule="evenodd" d="M2 3.75A.75.75 0 012.75 3h11.5a.75.75 0 010 1.5H2.75A.75.75 0 012 3.75zm0 4.5A.75.75 0 012.75 7.5h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 012 8.25zm0 4.5a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75zm0 4.5a.75.75 0 01.75-.75h9.5a.75.75 0 010 1.5h-9.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+            </svg>
+            Tree
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Error Banner (Shown upon parser syntax errors) -->
+    <section id="error-banner" class="error-banner" hidden role="alert" aria-live="assertive">
+      <div class="error-banner-content">
+        <svg class="error-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div>
+          <h2 id="error-title" class="error-banner-title">Syntax Error</h2>
+          <p id="error-message" class="error-banner-message">JSON parsing failed</p>
+          <pre id="error-snippet" class="error-snippet-pre"></pre>
+        </div>
+      </div>
+      <div class="error-banner-actions">
+        <button id="btn-jump-error" class="error-action-jump">Jump to Line</button>
+        <button id="error-dismiss" class="error-action-dismiss" title="Dismiss error">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Dual Workspace (Editor + Tree) -->
+    <div class="workspace-panels view-mode-split" id="workspace-panels">
+
+      <!-- LEFT PANEL: Text Editor / File Upload -->
+      <section class="panel-card editor-panel" aria-labelledby="editor-title">
+        <header class="panel-header">
+          <div class="panel-title-area">
+            <h2 id="editor-title" class="panel-title">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm0 2h12v12H4V4z" clip-rule="evenodd" />
+              </svg>
+              Input Source
+            </h2>
+          </div>
+          <div class="panel-controls">
+            <span id="status-line-col" class="status-info-text">Ln 1, Col 1</span>
+          </div>
+        </header>
+
+        <!-- Mode 1: Textarea with line numbers -->
+        <div id="text-input-section" class="editor-body">
+          <div id="editor-line-numbers" class="editor-line-numbers" aria-hidden="true">1</div>
+          <textarea 
+            id="json-input" 
+            class="editor-textarea" 
+            placeholder="Paste your JSON here, or choose 'File' above to upload a file..." 
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            aria-label="Raw JSON Input Editor"
+          ></textarea>
+        </div>
+
+        <!-- Mode 2: File Upload Box -->
+        <div id="file-input-section" class="file-upload-zone" hidden>
+          <input type="file" id="file-input" accept=".json,.txt" hidden>
+          <div id="file-drop-zone" class="file-drop-box" tabindex="0" role="button" aria-label="Drop JSON or TXT file here or click to browse">
+            <svg class="file-drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="file-drop-title">Drag & drop your JSON or TXT file here</p>
+            <p class="file-drop-sub">or click to browse from your computer</p>
+          </div>
+
+          <div id="file-info-bar" class="file-info-bar" hidden>
+            <span>Loaded: <strong id="file-name-display" class="file-name-tag"></strong> (<span id="file-size-display"></span>)</span>
+            <button id="file-remove-btn" class="tool-btn tool-btn-danger" style="padding: 2px 8px; font-size: 0.75rem;">Remove</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL: Interactive Collapsible Tree Viewer -->
+      <section class="panel-card tree-panel" aria-labelledby="tree-title">
+        <header class="panel-header">
+          <div class="panel-title-area">
+            <h2 id="tree-title" class="panel-title">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path d="M3 3.5A1.5 1.5 0 014.5 2h6.879a1.5 1.5 0 011.06.44l4.122 4.12a1.5 1.5 0 01.439 1.061V16.5A1.5 1.5 0 0115.5 18h-11A1.5 1.5 0 013 16.5v-13z" />
+              </svg>
+              Interactive Tree View
+            </h2>
+          </div>
+
+          <!-- Tree Controls: Expand/Collapse & Search -->
+          <div class="panel-controls">
+            <!-- Search & Filter Box -->
+            <div class="tree-search-bar">
+              <svg class="tree-search-icon" viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+              </svg>
+              <input 
+                type="text" 
+                id="tree-search-input" 
+                class="tree-search-input" 
+                placeholder="Search keys / values... (Ctrl+K)" 
+                aria-label="Filter tree by key or value"
+              >
+              <button id="tree-search-clear" class="tree-search-clear" hidden title="Clear search" aria-label="Clear Search">&times;</button>
+            </div>
+            
+            <span id="tree-search-matches" class="search-matches-pill" hidden></span>
+
+            <!-- Expand / Collapse All -->
+            <button id="btn-expand-all" class="panel-btn" title="Expand all nodes">Expand All</button>
+            <button id="btn-collapse-all" class="panel-btn" title="Collapse all nodes">Collapse All</button>
+          </div>
+        </header>
+
+        <!-- Tree Target Container -->
+        <div id="tree-render-target" class="tree-viewport" role="tree" aria-label="JSON Hierarchy Tree">
+          <div class="tree-empty">Loading JSON tree...</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Status Bar -->
+    <footer class="status-bar" aria-label="Document Status and Privacy">
+      <div class="status-left">
+        <span id="status-validation" class="status-pill pill-neutral">
+          <span>Ready</span>
+        </span>
+        <span id="status-stats" class="status-info-text">0 B • 0 keys</span>
+      </div>
+      <div class="status-right">
+        <span class="status-info-text">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13" style="display:inline; vertical-align:-1px; margin-right:3px;" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
+          </svg>
+          Processed locally in your browser. Never sent to any server.
+        </span>
+      </div>
+    </footer>
+
+    <!-- Informational Supporting Sections -->
+    <section class="info-sections-container">
+      
+      <!-- 3-Step How to Use -->
+      <article class="steps-section">
+        <h2 class="section-heading">How to use</h2>
+        <p class="section-subheading">Three simple steps to inspect and format your JSON files.</p>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-badge">1</div>
+            <h3 class="step-title">Paste or Upload</h3>
+            <p class="step-desc">Paste your JSON data into the editor or upload any <code>.json</code> or <code>.txt</code> file directly from your disk.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">2</div>
+            <h3 class="step-title">Format & Validate</h3>
+            <p class="step-desc">Click <strong>Format</strong> to beautify with clean 2-space indentation, or <strong>Validate</strong> to check for syntax errors and line numbers.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">3</div>
+            <h3 class="step-title">Inspect or Copy</h3>
+            <p class="step-desc">Explore the collapsible tree, search keys and values, copy specific nodes, or copy the entire formatted result to your clipboard.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Educational & Privacy Information -->
+      <div class="info-cards-grid">
+        <!-- What is JSON? -->
+        <article class="info-card">
+          <h2 class="info-card-header">
+            <svg class="info-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            What is JSON?
+          </h2>
+          <p class="info-card-p">
+            <strong>JSON (JavaScript Object Notation)</strong> is a lightweight, text-based data interchange format based on a subset of JavaScript syntax. It is language-independent, human-readable, and universally supported across modern programming languages, APIs, and databases.
+          </p>
+          <p class="info-card-p">
+            JSON structures consist of collections of name/value pairs (objects) and ordered lists of values (arrays). Standard value types include strings, numbers, booleans, objects, arrays, and <code>null</code>.
+          </p>
+        </article>
+
+        <!-- Privacy & Security -->
+        <article class="info-card">
+          <h2 class="info-card-header">
+            <svg class="info-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Privacy & Security
+          </h2>
+          <p class="info-card-p">
+            Your data confidentiality is paramount. Unlike many online tools that post your payload to remote servers, this tool executes <strong>100% client-side</strong> using standard browser APIs (JavaScript V8 engine).
+          </p>
+          <div class="privacy-highlight-box">
+            <strong>Guaranteed Local Processing:</strong> Your JSON is processed locally in your browser and is not saved anywhere. No databases, no logging, and zero tracking cookies.
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <span>Online JSON Viewer & Formatter &bull; Privacy-First Open Web Utility</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="mailto:support@example.com" class="footer-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <span>Contact & Feedback</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <aside id="shortcuts-modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="modal-shortcuts-title">
+    <div class="modal-dialog">
+      <header class="modal-header">
+        <h3 id="modal-shortcuts-title" class="modal-title">Keyboard Shortcuts</h3>
+        <button id="shortcuts-modal-close" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </header>
+      <div class="modal-body">
+        <table class="shortcuts-table">
+          <tbody>
+            <tr>
+              <td class="shortcut-action-name">Format / Beautify</td>
+              <td class="shortcut-key-wrapper"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+            <tr>
+              <td class="shortcut-action-name">Copy to Clipboard</td>
+              <td class="shortcut-key-wrapper"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></td>
+            </tr>
+            <tr>
+              <td class="shortcut-action-name">Focus Search Box</td>
+              <td class="shortcut-key-wrapper"><kbd>Ctrl</kbd> + <kbd>K</kbd></td>
+            </tr>
+            <tr>
+              <td class="shortcut-action-name">Minify JSON</td>
+              <td class="shortcut-key-wrapper"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+            </tr>
+            <tr>
+              <td class="shortcut-action-name">Close Modal / Clear Search</td>
+              <td class="shortcut-key-wrapper"><kbd>Esc</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Application Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

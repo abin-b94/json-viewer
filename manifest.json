@@ -1,0 +1,17 @@
+{
+  "name": "Online JSON Viewer & Formatter",
+  "short_name": "JSON Viewer",
+  "description": "Privacy-first, client-side JSON Viewer, Formatter, Validator, and Minifier.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

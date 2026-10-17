@@ -1,0 +1,17 @@
+{
+  "name": "online-json-viewer",
+  "version": "1.0.0",
+  "description": "Privacy-first online JSON Viewer, Formatter, Validator, and Minifier",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "json-viewer",
+    "json-formatter",
+    "json-validator",
+    "privacy-first"
+  ],
+  "author": "",
+  "license": "MIT"
+}
