@@ -763,3 +763,4 @@ class JsonViewerApp {
 document.addEventListener('DOMContentLoaded', () => {
   window.__jsonViewerApp = new JsonViewerApp();
 });
+

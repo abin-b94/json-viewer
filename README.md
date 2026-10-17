@@ -153,3 +153,4 @@ Because this app consists exclusively of static client-side files, it can be dep
 ## 📄 License
 
 MIT License. Free for personal, commercial, and open-source usage.
+

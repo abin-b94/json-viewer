@@ -435,3 +435,4 @@ export class JsonTreeViewer {
       .replace(/'/g, '&#039;');
   }
 }
+
